@@ -6,7 +6,8 @@ services:
     restart: always
     ports:
       - 80:80
-      - 4040:4040
+      - 8080:8080
+      - 8081:8081
     volumes:
       - ./nginx/service:/code
       - ./nginx/static/5xx.html:/code/5xx.html
