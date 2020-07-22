@@ -1,5 +1,4 @@
 from flask import Response, Flask, request
-from flask import request
 from helpers import graphs, count_process, prometheus_client, time
 
 app = Flask(__name__)
