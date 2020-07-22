@@ -1,0 +1,5 @@
+log
+python_modules
+*__pycache__*
+supervisord.log
+supervisord.pid

@@ -1,0 +1,1 @@
+How to handle error pages for frontend microservices architecture nginx vs envoy.
