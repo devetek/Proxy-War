@@ -12,4 +12,4 @@ make run-dev
 
 # Test
 
-Open http://localhost/fallback-error for test service error handler. Open http://localhost/totally-error for test default when all of the service down!.
+Open http://localhost/error-400, http://localhost/error-401, http://localhost/error-403, http://localhost/error-404, http://localhost/error-500, http://localhost/error-502, http://localhost/error-503, http://localhost/error-504 for test service error handler. Open http://localhost/totally-error for test default when all of the service down!.
