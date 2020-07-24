@@ -6,7 +6,7 @@ app = Flask(__name__)
 @app.route('/<path:path>')
 def catch_all(path):
   is_error = 'False'
-  code_error = 500
+  code_error = 401
 
   if 'X-Header-Error' in request.headers:
     is_error = request.headers['X-Header-Error']
@@ -15,12 +15,12 @@ def catch_all(path):
     code_error = request.headers['X-Header-Status']
 
   response = make_response('Hi guest, are you lost in page %s, with error status %s' % (path, code_error))
-  response.status_code = int(code_error)
+  response.status_code = 401
   response.headers['X-App-Name'] = 'tkp-error-app'
 
   # Default error handler simulation
   if is_error == 'True':
-    response.status_code = 503
+    response.status_code = 502
 
   return response
 
