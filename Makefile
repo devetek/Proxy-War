@@ -1,12 +1,11 @@
-SERVICE :=zeus
+ENGINE	:= envoy
 
-.PHONY: build-deploy
-build-deploy: .validator
-	@ docker build -f nginx/Dockerfile -t prakasa1904/nginx-service-export .
-	@ docker push prakasa1904/nginx-service-export
+include nginx/Makefile
+include envoy/Makefile
 
 .PHONY: run-dev
 run-dev: .validator
+	@ cp -rf $(ENGINE)-docker-compose.yaml docker-compose.yaml
 	@ docker-compose down --remove-orphans
 	@ docker-compose up -d
 

@@ -2,7 +2,7 @@ version: '3.7'
 
 services:
   nginx_fallback:
-    image: prakasa1904/nginx-service-export
+    image: prakasa1904/nginx-error-fallback
     restart: always
     ports:
       - 80:80
