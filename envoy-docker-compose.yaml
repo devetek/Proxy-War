@@ -2,7 +2,7 @@ version: "3.7"
 services:
 
   balancer-envoy:
-    image: envoyproxy/envoy-dev:latest
+    image: prakasa1904/envoy-error-fallback
     restart: always
     command: "/usr/local/bin/envoy -c /balancer-envoy.yaml --service-cluster balancer-proxy"
     volumes:
@@ -19,35 +19,29 @@ services:
       - ENVOY_UID=0
 
   ares:
-    image: prakasa1904/envoy-error-fallback
+    image: prakasa1904/error-service
     restart: always
     networks:
-      envoymesh:
-        aliases:
-          - ares
+      - envoymesh
     environment:
       - SERVICE_NAME=ares
     expose:
       - "8080"
 
   atreus:
-    image: prakasa1904/envoy-error-fallback
+    image: prakasa1904/error-service
     restart: always
     networks:
-      envoymesh:
-        aliases:
-          - atreus
+      - envoymesh
     environment:
       - SERVICE_NAME=atreus
     expose:
       - "8080"
   
   thor:
-    image: prakasa1904/envoy-error-fallback
+    image: prakasa1904/error-service
     networks:
-      envoymesh:
-        aliases:
-          - thor
+      - envoymesh
     environment:
       - SERVICE_NAME=thor
     expose:
