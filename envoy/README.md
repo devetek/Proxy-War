@@ -1,1 +1,8 @@
-To the next generation
+# To the next generation
+
+## A/B Test
+- [A/B](https://github.com/envoyproxy/envoy/blob/master/docs/root/configuration/http/http_conn_man/traffic_splitting.rst)
+
+## Totally Error
+
+- [Local Reply](https://github.com/envoyproxy/envoy/blob/master/docs/root/configuration/http/http_conn_man/local_reply.rst)
