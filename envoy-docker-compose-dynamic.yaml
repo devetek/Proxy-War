@@ -1,0 +1,63 @@
+version: "3.7"
+services:
+
+  balancer-envoy:
+    image: prakasa1904/envoy-error-fallback
+    restart: always
+    volumes:
+      - ./envoy/dynamic/cds.conf:/etc/envoy/cds.conf
+      - ./envoy/dynamic/lds.conf:/etc/envoy/lds.conf
+      - ./envoy/dynamic/main-eds.conf:/etc/envoy/main-eds.conf
+      - ./envoy/dynamic/second-eds.conf:/etc/envoy/second-eds.conf
+      - ./envoy/dynamic/balancer-envoy.yaml:/etc/envoy/envoy.yaml
+    networks:
+      - envoymesh
+    expose:
+      - "80"
+      - "8001"
+    ports:
+      - "8000:80"
+      - "8001:8001"
+    environment: 
+      - ENVOY_UID=0
+
+  ares:
+    image: prakasa1904/error-service
+    restart: always
+    networks:
+      - envoymesh
+    environment:
+      - SERVICE_NAME=ares
+    expose:
+      - "8080"
+
+  atreus:
+    image: prakasa1904/error-service
+    restart: always
+    networks:
+      - envoymesh
+    environment:
+      - SERVICE_NAME=atreus
+    expose:
+      - "8080"
+
+  zeus:
+    image: prakasa1904/error-service
+    networks:
+      - envoymesh
+    environment:
+      - SERVICE_NAME=zeus
+    expose:
+      - "8080"
+  
+  thor:
+    image: prakasa1904/error-service
+    networks:
+      - envoymesh
+    environment:
+      - SERVICE_NAME=thor
+    expose:
+      - "8080"
+
+networks:
+  envoymesh: {}

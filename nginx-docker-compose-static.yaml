@@ -1,0 +1,20 @@
+version: '3.7'
+
+services:
+  nginx_fallback:
+    image: prakasa1904/nginx-error-fallback
+    restart: always
+    ports:
+      - 80:80
+      - 8080:8080
+      - 8081:8081
+    volumes:
+      - ./nginx/service:/code
+      - ./nginx/static/empty.html:/code/empty.html
+      - ./nginx/static/5xx.html:/code/5xx.html
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+      - ./nginx/process/supervisor.conf:/etc/supervisor.conf
+      - ./log/access-log-exporter:/var/log/access-log-exporter
+      - ./log/nginx:/var/log/nginx
+      - ./log/supervisor:/var/log/supervisor

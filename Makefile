@@ -1,11 +1,12 @@
 ENGINE	:= envoy
+TYPE	:= dynamic
 
 include nginx/Makefile
 include envoy/Makefile
 
 .PHONY: run-dev
 run-dev: .validator
-	@ cp -rf $(ENGINE)-docker-compose.yaml docker-compose.yaml
+	@ cp -rf $(ENGINE)-docker-compose-$(TYPE).yaml docker-compose.yaml
 	@ docker-compose down --remove-orphans
 	@ docker-compose up -d
 
