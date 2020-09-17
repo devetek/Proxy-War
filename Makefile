@@ -1,14 +1,18 @@
 ENGINE	:= envoy
-TYPE	:= dynamic
+TYPE	:= static
 
 include nginx/Makefile
 include envoy/Makefile
+
+.PHONY: gen-cert
+gen-cert: .certval
+	@ ./scripts/cert.sh
 
 .PHONY: run-dev
 run-dev: .validator
 	@ cp -rf $(ENGINE)-docker-compose-$(TYPE).yaml docker-compose.yaml
 	@ docker-compose down --remove-orphans
-	@ docker-compose up -d
+	@ docker-compose up
 
 .PHONY: show-services
 show-services: .validator
@@ -21,6 +25,13 @@ show-log: .validator
 .PHONY: down-dev
 down-dev: .validator
 	@ docker-compose down --remove-orphans
+
+
+.PHONY: .certval
+.certval:
+	$(eval WHICH_MKCERT := $(shell which mkcert))
+
+	@ test -n "$(WHICH_MKCERT)" || sh -c 'echo "No mkcert binary, follow this link to install in mac https://github.com/FiloSottile/mkcert#mkcert" && exit 1'
 
 .PHONY: .validator
 .validator:

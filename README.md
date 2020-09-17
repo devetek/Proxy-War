@@ -12,4 +12,4 @@ make run-dev
 
 # Test
 
-Open http://localhost/error-400, http://localhost/error-401, http://localhost/error-403, http://localhost/error-404, http://localhost/error-500, http://localhost/error-502, http://localhost/error-503, http://localhost/error-504 for test service error handler. Open http://localhost/totally-error for test default when all of the service down!.
+Open https://devel.tokopedia.com/error-400, https://devel.tokopedia.com/error-401, https://devel.tokopedia.com/error-403, https://devel.tokopedia.com/error-404, https://devel.tokopedia.com/error-500, https://devel.tokopedia.com/error-502, https://devel.tokopedia.com/error-503, https://devel.tokopedia.com/error-504 for test service error handler. Open https://devel.tokopedia.com/totally-error for test default when all of the service down!.
