@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"net"
 	"net/http"
@@ -9,6 +10,11 @@ import (
 	"golang.org/x/net/http2"
 	"golang.org/x/net/http2/h2c"
 )
+
+type Person struct {
+	Name string `json:"name"`
+	Log  string `json:"log"`
+}
 
 func checkErr(err error, msg string) {
 	if err == nil {
@@ -20,7 +26,6 @@ func checkErr(err error, msg string) {
 
 func main() {
 	H2CServerUpgrade()
-	//H2CServerPrior()
 }
 
 // This server supports "H2C upgrade" and "H2C prior knowledge" along with
@@ -28,8 +33,18 @@ func main() {
 func H2CServerUpgrade() {
 	h2s := &http2.Server{}
 
+	profile := Person{"Alex", os.Getenv("SERVICE_NAME")}
 	handler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprintf(w, "Hello, %v, http: %v, welcome to service %s", r.URL.Path, r.TLS == nil, os.Getenv("SERVICE_NAME"))
+		fmt.Printf("Request coming....")
+
+		json, err := json.Marshal(profile)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		w.Header().Set("Content-Type", "application/json")
+		w.Write(json)
 	})
 
 	server := &http.Server{
