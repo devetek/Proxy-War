@@ -22,7 +22,7 @@ services:
       - ENVOY_UID=0
 
   ares:
-    image: prakasa1904/error-service
+    image: prakasa1904/go-http2
     restart: always
     networks:
       - envoymesh
@@ -32,7 +32,7 @@ services:
       - "8080"
 
   atreus:
-    image: prakasa1904/error-service
+    image: prakasa1904/go-http2
     restart: always
     networks:
       - envoymesh
@@ -42,7 +42,7 @@ services:
       - "8080"
   
   thor:
-    image: prakasa1904/error-service
+    image: prakasa1904/go-http2
     networks:
       - envoymesh
     environment:

@@ -67,11 +67,13 @@ static_resources:
                 filename: "/etc/tokopedia.com.pem"
               private_key:
                 filename: "/etc/tokopedia.com-key.pem"
+          alpn_protocols: ["h2,http/1.1"]
   clusters:
   - name: multiple
     connect_timeout: 1s
     type: STRICT_DNS
     lb_policy: round_robin
+    http2_protocol_options: {}
     load_assignment:
       cluster_name: multiple
       endpoints:
@@ -94,6 +96,7 @@ static_resources:
     connect_timeout: 1s
     type: STRICT_DNS
     lb_policy: round_robin
+    http2_protocol_options: {}
     load_assignment:
       cluster_name: ares
       endpoints:
@@ -107,6 +110,7 @@ static_resources:
     connect_timeout: 1s
     type: STRICT_DNS
     lb_policy: round_robin
+    http2_protocol_options: {}
     load_assignment:
       cluster_name: atreus
       endpoints:
@@ -120,6 +124,7 @@ static_resources:
     connect_timeout: 0.25s
     type: STRICT_DNS
     lb_policy: round_robin
+    http2_protocol_options: {}
     load_assignment:
       cluster_name: thor
       endpoints:
