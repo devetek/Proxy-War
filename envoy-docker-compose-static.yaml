@@ -12,41 +12,54 @@ services:
     networks:
       - envoymesh
     expose:
-      - "8000"
+      - "8443"
       - "8001"
     ports:
-      - "80:8000"
       - "443:8443"
       - "8001:8001"
     environment: 
       - ENVOY_UID=0
 
-  ares:
-    image: prakasa1904/go-http2
+  frontend-http1:
+    image: prakasa1904/go-http1
     restart: always
     networks:
       - envoymesh
     environment:
-      - SERVICE_NAME=ares
+      - SERVICE_NAME=frontend-http1
     expose:
-      - "8080"
+      - "8081"
 
-  atreus:
-    image: prakasa1904/go-http2
+  l2-envoy:
+    image: prakasa1904/envoy-error-fallback
+    restart: always
+    command: "/usr/local/bin/envoy -c /L2-envoy.yaml --service-cluster l2-proxy"
+    volumes:
+      - ./envoy/L2-envoy.yaml:/L2-envoy.yaml
+    networks:
+      - envoymesh
+    expose:
+      - "80"
+      - "8001"
+    environment: 
+      - ENVOY_UID=0
+
+  backend-http1:
+    image: prakasa1904/go-http1
     restart: always
     networks:
       - envoymesh
     environment:
-      - SERVICE_NAME=atreus
+      - SERVICE_NAME=backend-http1
     expose:
       - "8080"
   
-  thor:
+  backend-http2:
     image: prakasa1904/go-http2
     networks:
       - envoymesh
     environment:
-      - SERVICE_NAME=thor
+      - SERVICE_NAME=backend-http2
     expose:
       - "8080"
 

@@ -45,15 +45,15 @@ static_resources:
               - match:
                   path: "/"
                 route:
-                  cluster: multiple
-              - match:
-                  prefix: "/service/ares"
-                route:
-                  cluster: ares
-              - match:
-                  prefix: "/service/atreus"
-                route:
-                  cluster: atreus
+                  cluster: frontend-http1
+              # - match:
+              #     prefix: "/service/ares"
+              #   route:
+              #     cluster: ares
+              # - match:
+              #     prefix: "/service/atreus"
+              #   route:
+              #     cluster: atreus
               # - match:
               #     regex: "^(.*)"
               #   route:
@@ -69,71 +69,71 @@ static_resources:
                 filename: "/etc/tokopedia.com-key.pem"
           alpn_protocols: ["h2,http/1.1"]
   clusters:
-  - name: multiple
+  - name: frontend-http1
     connect_timeout: 1s
     type: STRICT_DNS
     lb_policy: round_robin
-    http2_protocol_options: {}
+    # http2_protocol_options: {}
     load_assignment:
-      cluster_name: multiple
+      cluster_name: frontend-http1
       endpoints:
       - lb_endpoints:
         - endpoint:
             health_check_config:
-              port_value: 8080
+              port_value: 8081
             address:
               socket_address:
-                address: thor
-                port_value: 8080
-        - endpoint:
-            health_check_config:
-              port_value: 8080
-            address:
-              socket_address:
-                address: ares
-                port_value: 8080
-  - name: ares
-    connect_timeout: 1s
-    type: STRICT_DNS
-    lb_policy: round_robin
-    http2_protocol_options: {}
-    load_assignment:
-      cluster_name: ares
-      endpoints:
-      - lb_endpoints:
-        - endpoint:
-            address:
-              socket_address:
-                address: ares
-                port_value: 8080
-  - name: atreus
-    connect_timeout: 1s
-    type: STRICT_DNS
-    lb_policy: round_robin
-    http2_protocol_options: {}
-    load_assignment:
-      cluster_name: atreus
-      endpoints:
-      - lb_endpoints:
-        - endpoint:
-            address:
-              socket_address:
-                address: atreus
-                port_value: 8080
-  - name: thor
-    connect_timeout: 0.25s
-    type: STRICT_DNS
-    lb_policy: round_robin
-    http2_protocol_options: {}
-    load_assignment:
-      cluster_name: thor
-      endpoints:
-      - lb_endpoints:
-        - endpoint:
-            address:
-              socket_address:
-                address: thor
-                port_value: 8080
+                address: frontend-http1
+                port_value: 8081
+        # - endpoint:
+        #     health_check_config:
+        #       port_value: 8080
+        #     address:
+        #       socket_address:
+        #         address: ares
+        #         port_value: 8080
+  # - name: ares
+  #   connect_timeout: 1s
+  #   type: STRICT_DNS
+  #   lb_policy: round_robin
+  #   http2_protocol_options: {}
+  #   load_assignment:
+  #     cluster_name: ares
+  #     endpoints:
+  #     - lb_endpoints:
+  #       - endpoint:
+  #           address:
+  #             socket_address:
+  #               address: ares
+  #               port_value: 8080
+  # - name: atreus
+  #   connect_timeout: 1s
+  #   type: STRICT_DNS
+  #   lb_policy: round_robin
+  #   http2_protocol_options: {}
+  #   load_assignment:
+  #     cluster_name: atreus
+  #     endpoints:
+  #     - lb_endpoints:
+  #       - endpoint:
+  #           address:
+  #             socket_address:
+  #               address: atreus
+  #               port_value: 8080
+  # - name: thor
+  #   connect_timeout: 0.25s
+  #   type: STRICT_DNS
+  #   lb_policy: round_robin
+  #   http2_protocol_options: {}
+  #   load_assignment:
+  #     cluster_name: thor
+  #     endpoints:
+  #     - lb_endpoints:
+  #       - endpoint:
+  #           address:
+  #             socket_address:
+  #               address: thor
+  #               port_value: 8080
 admin:
   access_log_path: "/dev/null"
   address:

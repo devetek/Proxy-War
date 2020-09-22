@@ -7,14 +7,10 @@ import (
 	"net/http"
 	"os"
 
+	"github.com/devetek/error-hanlder/types"
 	"golang.org/x/net/http2"
 	"golang.org/x/net/http2/h2c"
 )
-
-type Person struct {
-	Name string `json:"name"`
-	Log  string `json:"log"`
-}
 
 func checkErr(err error, msg string) {
 	if err == nil {
@@ -33,7 +29,7 @@ func main() {
 func H2CServerUpgrade() {
 	h2s := &http2.Server{}
 
-	profile := Person{"Alex", os.Getenv("SERVICE_NAME")}
+	profile := types.Person{"Http2", os.Getenv("SERVICE_NAME")}
 	handler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		fmt.Printf("Request coming....")
 

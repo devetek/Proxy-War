@@ -3,6 +3,7 @@ TYPE	:= static
 
 include nginx/Makefile
 include envoy/Makefile
+include http1/Makefile
 include http2/Makefile
 
 .PHONY: gen-cert

@@ -8,13 +8,9 @@ import (
 	"net/http"
 	"os"
 
+	"github.com/devetek/error-hanlder/types"
 	"golang.org/x/net/http2"
 )
-
-type Person struct {
-	Name string `json:"name"`
-	Log  string `json:"log"`
-}
 
 func checkErr(err error, msg string) {
 	if err == nil {
@@ -28,15 +24,16 @@ func main() {
 	H1CServerUpgrade()
 }
 
-const url = "http://localhost:8080"
+const url = "http://l2-envoy"
 
 func H1CServerUpgrade() {
 	fmt.Printf("Listening [0.0.0.0:8081]...\n")
-	http.HandleFunc("/", HelloServer)
+	http.HandleFunc("/", FrontendServer)
+	http.HandleFunc("/api", ApiServer)
 	http.ListenAndServe(":8081", nil)
 }
 
-func HelloServer(w http.ResponseWriter, r *http.Request) {
+func FrontendServer(w http.ResponseWriter, r *http.Request) {
 	backednResponse := HttpClientExample()
 	json, err := json.Marshal(backednResponse)
 	if err != nil {
@@ -47,8 +44,21 @@ func HelloServer(w http.ResponseWriter, r *http.Request) {
 	w.Write(json)
 }
 
-func HttpClientExample() Person {
-	var defaultResponse = Person{}
+func ApiServer(w http.ResponseWriter, r *http.Request) {
+	profile := types.Person{"Http1", os.Getenv("SERVICE_NAME")}
+
+	json, err := json.Marshal(profile)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	w.Write(json)
+}
+
+func HttpClientExample() types.Person {
+	var defaultResponse = types.Person{}
 
 	client := http.Client{
 		Transport: &http2.Transport{
