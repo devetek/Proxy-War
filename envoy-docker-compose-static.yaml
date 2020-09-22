@@ -56,7 +56,7 @@ services:
     environment:
       - SERVICE_NAME=backend-http1
     expose:
-      - "8080"
+      - "8081"
   
   backend-http2:
     image: prakasa1904/go-http2
