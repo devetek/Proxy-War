@@ -41,7 +41,10 @@ services:
       - envoymesh
     expose:
       - "80"
-      - "8001"
+      - "8002"
+    ports:
+      - "80:80"
+      - "8002:8002"
     environment: 
       - ENVOY_UID=0
 
