@@ -24,7 +24,7 @@ func main() {
 	H1CServerUpgrade()
 }
 
-const url = "http://l2-envoy"
+var url = os.Getenv("BACKEND_API")
 
 func H1CServerUpgrade() {
 	fmt.Printf("Listening [0.0.0.0:8081]...\n")
@@ -34,6 +34,7 @@ func H1CServerUpgrade() {
 }
 
 func FrontendServer(w http.ResponseWriter, r *http.Request) {
+	fmt.Printf("Request coming to frontend HTTP1....")
 	backednResponse := HttpClientExample()
 	json, err := json.Marshal(backednResponse)
 	if err != nil {
@@ -41,10 +42,12 @@ func FrontendServer(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("X-Service-Name", "http1-frontend")
 	w.Write(json)
 }
 
 func ApiServer(w http.ResponseWriter, r *http.Request) {
+	fmt.Printf("Request coming to backend HTTP1....")
 	profile := types.Person{"Http1", os.Getenv("SERVICE_NAME")}
 
 	json, err := json.Marshal(profile)

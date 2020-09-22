@@ -69,7 +69,7 @@ static_resources:
     connect_timeout: 1s
     type: STRICT_DNS
     lb_policy: round_robin
-    http2_protocol_options: {}
+    # http2_protocol_options: {}
     per_connection_buffer_limit_bytes: 1024
     load_assignment:
       cluster_name: backend-http1

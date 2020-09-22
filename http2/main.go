@@ -31,7 +31,7 @@ func H2CServerUpgrade() {
 
 	profile := types.Person{"Http2", os.Getenv("SERVICE_NAME")}
 	handler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		fmt.Printf("Request coming....")
+		fmt.Printf("Request coming to backend HTTP2....")
 
 		json, err := json.Marshal(profile)
 		if err != nil {
