@@ -12,9 +12,11 @@ services:
     networks:
       - envoymesh
     expose:
+      - "8000"
       - "8443"
       - "8001"
     ports:
+      - "80:8000"
       - "443:8443"
       - "8001:8001"
     environment: 
