@@ -24,7 +24,8 @@ func main() {
 	H1CServerUpgrade()
 }
 
-var url = os.Getenv("BACKEND_API")
+var URL_HTTP1 = os.Getenv("BACKEND_API_HTTP1")
+var URL_HTTP2 = os.Getenv("BACKEND_API_HTTP2")
 
 func H1CServerUpgrade() {
 	fmt.Printf("Listening [0.0.0.0:8081]...\n")
@@ -34,24 +35,27 @@ func H1CServerUpgrade() {
 }
 
 func FrontendServer(w http.ResponseWriter, r *http.Request) {
-	fmt.Printf("Request coming to frontend HTTP1....")
-	backednResponse := HttpClientExample()
+	fmt.Printf("Request coming to frontend HTTP1....\n")
+	backednResponse := OpenConnectionHTTP2()
 	json, err := json.Marshal(backednResponse)
+
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
+
 	w.Header().Set("Content-Type", "application/json")
 	w.Header().Set("X-Service-Name", "http1-frontend")
 	w.Write(json)
 }
 
 func ApiServer(w http.ResponseWriter, r *http.Request) {
-	fmt.Printf("Request coming to backend HTTP1....")
+	fmt.Printf("Request coming to backend HTTP1....\n")
 	profile := types.Person{"Http1", os.Getenv("SERVICE_NAME")}
 
 	json, err := json.Marshal(profile)
 	if err != nil {
+		fmt.Printf("ApiServer Error 1: %v", err)
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
@@ -60,7 +64,7 @@ func ApiServer(w http.ResponseWriter, r *http.Request) {
 	w.Write(json)
 }
 
-func HttpClientExample() types.Person {
+func OpenConnectionHTTP2() types.Person {
 	var defaultResponse = types.Person{}
 
 	client := http.Client{
@@ -72,9 +76,10 @@ func HttpClientExample() types.Person {
 		},
 	}
 
-	resp, err := client.Get(url)
+	resp, err := client.Get(URL_HTTP2)
 
 	if err != nil {
+		fmt.Printf("OpenConnectionHTTP2 Error 1: %v", err)
 		return defaultResponse
 	}
 
@@ -83,6 +88,7 @@ func HttpClientExample() types.Person {
 	err = dec.Decode(&defaultResponse)
 
 	if err != nil {
+		fmt.Printf("OpenConnectionHTTP2 Error 2: %v", err)
 		return defaultResponse
 	}
 

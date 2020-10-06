@@ -25,9 +25,13 @@ services:
     restart: always
     networks:
       - envoymesh
+    volumes:
+      - ./http1/main.go:/terpusat/http1/main.go
+      - ./types/types.go:/terpusat/types/types.go
     environment:
       - SERVICE_NAME=frontend-http1
-      - BACKEND_API=http://l2-envoy
+      - BACKEND_API_HTTP1=http://l2-envoy/api
+      - BACKEND_API_HTTP2=http://l2-envoy
     expose:
       - "8081"
 
@@ -43,8 +47,8 @@ services:
       - "80"
       - "8002"
     ports:
-      - "80:80"
-      - "8002:8002"
+      - "81:80"
+      - "8005:8002"
     environment: 
       - ENVOY_UID=0
 
@@ -53,6 +57,9 @@ services:
     restart: always
     networks:
       - envoymesh
+    volumes:
+      - ./http1/main.go:/terpusat/http1/main.go
+      - ./types/types.go:/terpusat/types/types.go
     environment:
       - SERVICE_NAME=backend-http1
     expose:
@@ -62,6 +69,9 @@ services:
     image: prakasa1904/go-http2
     networks:
       - envoymesh
+    volumes:
+      - ./http2/main.go:/terpusat/http2/main.go
+      - ./types/types.go:/terpusat/types/types.go
     environment:
       - SERVICE_NAME=backend-http2
     expose:

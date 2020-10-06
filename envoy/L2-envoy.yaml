@@ -17,7 +17,7 @@ static_resources:
             virtual_hosts:
             - name: backend_tokopedia_http2
               domains:
-                - "devel.tokopedia.com"
+                - "*"
               routes:
               - match:
                   path: "/"
