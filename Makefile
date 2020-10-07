@@ -11,7 +11,7 @@ gen-cert: .certval
 	@ ./scripts/cert.sh
 
 .PHONY: run-dev
-run-dev: .validator
+run-dev: .validator gen-cert
 	@ cp -rf $(ENGINE)-docker-compose-$(TYPE).yaml docker-compose.yaml
 	@ docker-compose down --remove-orphans
 	@ docker-compose up

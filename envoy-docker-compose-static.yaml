@@ -27,6 +27,7 @@ services:
     restart: always
     networks:
       - envoymesh
+      - monitor
     volumes:
       - ./http1/main.go:/terpusat/http1/main.go
       - ./types/types.go:/terpusat/types/types.go
@@ -45,6 +46,7 @@ services:
       - ./envoy/L2-envoy.yaml:/L2-envoy.yaml
     networks:
       - envoymesh
+      - monitor
     expose:
       - "80"
       - "8002"
@@ -59,6 +61,7 @@ services:
     restart: always
     networks:
       - envoymesh
+      - monitor
     volumes:
       - ./http1/main.go:/terpusat/http1/main.go
       - ./types/types.go:/terpusat/types/types.go
@@ -71,6 +74,7 @@ services:
     image: prakasa1904/go-http2
     networks:
       - envoymesh
+      - monitor
     volumes:
       - ./http2/main.go:/terpusat/http2/main.go
       - ./types/types.go:/terpusat/types/types.go
@@ -79,5 +83,76 @@ services:
     expose:
       - "8080"
 
+  prometheus:
+    image: prom/prometheus
+    volumes:
+      - ./monitor/prometheus/:/etc/prometheus/
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/usr/share/prometheus/console_libraries'
+      - '--web.console.templates=/usr/share/prometheus/consoles'
+    ports:
+      - 9090:9090
+    links:
+      - cadvisor:cadvisor
+      - alertmanager:alertmanager
+    depends_on:
+      - cadvisor
+    networks:
+      - monitor
+    restart: always
+  
+  alertmanager:
+    image: prom/alertmanager
+    ports:
+      - 9093:9093
+    volumes:
+      - ./monitor/alertmanager/:/etc/alertmanager/
+    networks:
+      - monitor
+    restart: always
+    command:
+      - '--config.file=/etc/alertmanager/config.yml'
+      - '--storage.path=/alertmanager'
+
+  grafana:
+    image: grafana/grafana
+    user: "104"
+    depends_on:
+      - prometheus
+    ports:
+      - 3000:3000
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./monitor/grafana/provisioning/:/etc/grafana/provisioning/
+    env_file:
+      - ./monitor/grafana/config.monitoring
+    networks:
+      - envoymesh
+      - monitor
+    restart: always
+
+  cadvisor:
+    image: google/cadvisor
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:rw
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+    ports:
+      - 8080:8080
+    networks:
+      - monitor
+    restart: always
+    deploy:
+      mode: global
+
+volumes:
+  prometheus_data: {}
+  grafana_data: {}
+
 networks:
   envoymesh: {}
+  monitor: {}
