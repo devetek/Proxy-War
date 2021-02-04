@@ -1,8 +1,8 @@
 #!/bin/bash
 
-mkcert "*.tokopedia.com"
+mkcert "*.domain.com"
 
 mkcert -install
 
-mv _wildcard.tokopedia.com-key.pem tokopedia.com-key.pem
-mv _wildcard.tokopedia.com.pem tokopedia.com.pem
+mv _wildcard.domain.com-key.pem domain.com-key.pem
+mv _wildcard.domain.com.pem domain.com.pem

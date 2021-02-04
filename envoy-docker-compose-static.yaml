@@ -6,9 +6,9 @@ services:
     restart: always
     command: "/usr/local/bin/envoy -c /balancer-envoy.yaml --service-cluster balancer-proxy"
     volumes:
-      - ./tokopedia.com.pem:/etc/tokopedia.com.pem
+      - ./domain.com.pem:/etc/domain.com.pem
       - ./envoy/balancer-envoy.yaml:/balancer-envoy.yaml
-      - ./tokopedia.com-key.pem:/etc/tokopedia.com-key.pem
+      - ./domain.com-key.pem:/etc/domain.com-key.pem
     networks:
       - envoymesh
     expose:

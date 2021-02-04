@@ -15,7 +15,7 @@ static_resources:
           route_config:
             name: http_route
             virtual_hosts:
-            - name: devel_tokopedia_http
+            - name: devel_domain_http
               domains:
                 - "*"
               routes:
@@ -40,9 +40,9 @@ static_resources:
           route_config:
             name: https_route
             virtual_hosts:
-            - name: devel_tokopedia_https
+            - name: devel_domain_https
               domains:
-                - "devel.tokopedia.com"
+                - "devel.domain.com"
               routes:
               - match:
                   path: "/"
@@ -66,9 +66,9 @@ static_resources:
         common_tls_context:
           tls_certificates:
             - certificate_chain:
-                filename: "/etc/tokopedia.com.pem"
+                filename: "/etc/domain.com.pem"
               private_key:
-                filename: "/etc/tokopedia.com-key.pem"
+                filename: "/etc/domain.com-key.pem"
           alpn_protocols: ["h2,http/1.1"]
   clusters:
   - name: frontend-http1

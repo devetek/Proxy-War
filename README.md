@@ -14,7 +14,7 @@ make run-dev
 
 # Test
 
-Open [link](https://devel.tokopedia.com) to check result in development
+Open [link](https://devel.domain.com) to check result in development
 
 # Background
 
